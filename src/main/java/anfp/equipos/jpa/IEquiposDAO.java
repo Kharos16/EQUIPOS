@@ -1,11 +1,11 @@
-package anfp.equipos.modelo.repository;
+package anfp.equipos.jpa;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import anfp.equipos.modelo.Equipo;
+import anfp.equipos.domain.Equipo;
 
 @Repository
 public interface IEquiposDAO extends JpaRepository<Equipo, String> {

@@ -2,8 +2,6 @@ package anfp.equipos.test;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.After;
@@ -15,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import anfp.equipos.modelo.Equipo;
-import anfp.equipos.modelo.repository.IEquiposDAO;
+import anfp.equipos.domain.Equipo;
+import anfp.equipos.jpa.IEquiposDAO;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

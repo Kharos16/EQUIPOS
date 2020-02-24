@@ -1,10 +1,12 @@
-package anfp.equipos.modelo;
+package anfp.equipos.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "equipos")
-public class Equipo {
+public class Equipo implements Serializable {
+	private static final long serialVersionUID = 4L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
