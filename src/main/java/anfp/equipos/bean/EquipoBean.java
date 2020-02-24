@@ -28,6 +28,10 @@ public class EquipoBean {
         return this.id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
