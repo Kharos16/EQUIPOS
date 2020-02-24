@@ -1,14 +1,15 @@
 package anfp.equipos.modelo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "equipos")
 public class Equipo {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private int id;
+	@Column(name = "nombre")
 	private String nombre;
 	@Column(name = "puntos")
 	private int puntos;
@@ -25,6 +26,10 @@ public class Equipo {
 		this.puntos = puntos;
 		this.ciudad = ciudad;
 		this.nombre_dt = nombre_dt;
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 	public String getNombre() {

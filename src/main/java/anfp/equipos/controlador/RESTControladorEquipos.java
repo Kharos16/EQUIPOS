@@ -3,14 +3,9 @@ package anfp.equipos.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import anfp.equipos.modelo.Equipo;
 import anfp.equipos.modelo.repository.IEquiposDAO;
@@ -20,9 +15,9 @@ public class RESTControladorEquipos {
 	@Autowired
 	IEquiposDAO daoEquipos;
 	
-	@GetMapping("/equipos/")
-	public List<Equipo> getEquipos() {
-		return daoEquipos.findAll();
+	@RequestMapping(value = "/equipos/", produces = {"application/json"}, method = RequestMethod.GET)
+	public ResponseEntity<List<Equipo>> getEquipos() {
+		return new ResponseEntity<>(daoEquipos.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/equipos/{nombre}")
