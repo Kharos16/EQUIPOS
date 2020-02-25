@@ -68,8 +68,8 @@ public class Equipo implements Serializable {
 
     @Override
     public String toString() {
-        return "Equipo [nombre=" + nombre + ", puntos=" + puntos + ", ciudad=" + ciudad + ", nombre_dt=" + nombre_dt
-                + "]";
+        return String.format("Equipo [id=%d, Nombre='%s'', puntos=%d, ciudad='%s'', nombre_dt='%s'']",
+                id, nombre, puntos, ciudad, nombre_dt);
     }
 
 }

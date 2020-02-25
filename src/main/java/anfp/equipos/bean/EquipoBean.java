@@ -18,6 +18,10 @@ public class EquipoBean {
     public EquipoBean() {
     }
 
+    public EquipoBean(String nombre,) {
+        this.nombre = nombre;
+    }
+
     public EquipoBean(String nombre, int puntos, String ciudad, String nombre_dt) {
         this.nombre = nombre;
         this.puntos = puntos;
