@@ -8,7 +8,11 @@ import java.util.List;
 
 @Repository
 public interface IEquiposDAO extends JpaRepository<Equipo, Integer> {
-    public List<Equipo> findAllByOrderByNombreDesc();
+    public List<Equipo> findAllByOrderByNombreAsc();
+
+    public List<Equipo> findAllByOrderByCiudadAsc();
+
+    public List<Equipo> findTop10ByOrderByPuntosDesc(int puntos);
 
     public boolean existsByNombre(String nombre);
 
@@ -18,7 +22,4 @@ public interface IEquiposDAO extends JpaRepository<Equipo, Integer> {
 
     public Equipo findByCiudad(String ciudad);
 
-    public List<Equipo> findTop10ByOrderByPuntosDesc(int puntos);
-
-    public List<Equipo> findByOrderByCiudadCiudadDesc(String ciudad);
 }

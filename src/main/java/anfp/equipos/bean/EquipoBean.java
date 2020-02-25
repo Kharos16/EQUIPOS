@@ -2,6 +2,7 @@ package anfp.equipos.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class EquipoBean {
     @JsonProperty
     private int id;
