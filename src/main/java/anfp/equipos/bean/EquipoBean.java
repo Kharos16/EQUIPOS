@@ -18,7 +18,7 @@ public class EquipoBean {
     public EquipoBean() {
     }
 
-    public EquipoBean(String nombre,) {
+    public EquipoBean(String nombre) {
         this.nombre = nombre;
     }
 

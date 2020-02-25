@@ -3,7 +3,6 @@ package anfp.equipos.controller;
 import anfp.equipos.bean.EquipoBean;
 import anfp.equipos.domain.Equipo;
 import anfp.equipos.service.EquipoService;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +69,8 @@ public class RESTControladorEquipos {
     @RequestMapping(value = "/equipos/{nombre}", produces = {"application/json"}, method = RequestMethod.DELETE)
     public ResponseEntity<EquipoBean> deleteEquipo(@PathVariable String nombre) {
         try {
-            EquipoBean bean = service.deleteEquipo();
-            return new ResponseEntity<>(bean, HttpStatus.CREATED);
+            EquipoBean bean = service.deleteEquipo(nombre);
+            return new ResponseEntity<>(bean, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.NOT_MODIFIED);
