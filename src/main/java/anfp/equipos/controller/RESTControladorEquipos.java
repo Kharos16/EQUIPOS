@@ -19,41 +19,61 @@ public class RESTControladorEquipos {
     @Autowired
     EquipoService service;
 
-    @RequestMapping(value = "/equipos/", produces = {"application/json"}, method = RequestMethod.GET)
-    public ResponseEntity<List<EquipoBean>> getEquipos(@PathVariable String sort) {
-
+    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.GET)
+    public ResponseEntity<List<EquipoBean>> getEquipos() {
         return new ResponseEntity<>(service.getAllEquiposOrderByNombreAsc(), HttpStatus.OK);
     }
 
-    @GetMapping("/equipos/{nombre}")
-    public Equipo getUnEquipo(@PathVariable Integer id) {
-        return service.findById(id).orElse(new Equipo());
+    @RequestMapping(value = "/equipos/ciudad", produces = {"application/json"}, method = RequestMethod.GET)
+    public ResponseEntity<List<EquipoBean>> getEquiposOrderByCiudad() {
+        return new ResponseEntity<>(service.getAllEquiposOrderByCiudadAsc(), HttpStatus.OK);
     }
 
-    @PostMapping("/equipos/")
-    public boolean addEquipo(@RequestBody Equipo nuevo) {
-        if (!service.existsById(nuevo.getId())) {
-            service.save(nuevo);
-            return true;
-        }
-        return false;
+    @RequestMapping(value = "/equipos/top10", produces = {"application/json"}, method = RequestMethod.GET)
+    public ResponseEntity<List<EquipoBean>> getEquiposTop10() {
+        return new ResponseEntity<>(service.getTop10OrderByPuntosAsc(), HttpStatus.OK);
     }
 
-    @PutMapping("/equipos/")
-    public boolean modifyEquipo(@RequestBody Equipo modificado) {
-        if (service.existsById(modificado.getId())) {
-            service.save(modificado);
-            return true;
-        }
-        return false;
+    @RequestMapping(value = "/equipos/{nombre}", produces = {"application/json"}, method = RequestMethod.GET)
+    public ResponseEntity<EquipoBean> getEquiposByNombre(@PathVariable String nombre) {
+        return new ResponseEntity<>(service.getEquipoByNombre(nombre), HttpStatus.OK);
     }
 
-    @DeleteMapping("/equipos/{nombre}")
-    public boolean deleteEquipo(@PathVariable Integer id) {
-        if (service.existsById(id)) {
-            service.deleteById(id);
-            return true;
+    @RequestMapping(value = "/equipos/{ciudad}", produces = {"application/json"}, method = RequestMethod.GET)
+    public ResponseEntity<EquipoBean> getEquiposByCiudad(@PathVariable String ciudad) {
+        return new ResponseEntity<>(service.getEquipoByCiudad(ciudad), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.POST)
+    public ResponseEntity<EquipoBean> createEquipo(@RequestBody Equipo equipo) {
+        try {
+            EquipoBean bean = service.createEquipo(equipo);
+            return new ResponseEntity<>(bean, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(new EquipoBean("No_Creado"), HttpStatus.BAD_REQUEST);
         }
-        return false;
+    }
+
+    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.PUT)
+    public ResponseEntity<EquipoBean> modifyEquipo(@RequestBody EquipoBean modificado) {
+        try {
+            EquipoBean bean = service.modifyEquipo(modificado);
+            return new ResponseEntity<>(bean, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.NOT_MODIFIED);
+        }
+    }
+
+    @RequestMapping(value = "/equipos/{nombre}", produces = {"application/json"}, method = RequestMethod.DELETE)
+    public ResponseEntity<EquipoBean> deleteEquipo(@PathVariable String nombre) {
+        try {
+            EquipoBean bean = service.deleteEquipo(nombre);
+            return new ResponseEntity<>(bean, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.NOT_MODIFIED);
+        }
     }
 }

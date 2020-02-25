@@ -51,7 +51,7 @@ public class EquiposTest {
 
     @Test
     public void cuandoFindEsCobreloaConTodosSusDatosEntoncesTrue() {
-        Equipo Cobreloa = this.daoEquipos.findById("Cobreloa").get();
+        Equipo Cobreloa = this.daoEquipos.findById("Cobreloa").orElse(new Equipo("Cobreloa"));
         boolean flag = false;
         if (Cobreloa.getNombre().equalsIgnoreCase("Cobreloa") && Cobreloa.getPuntos() == 38 && Cobreloa.getCiudad().equalsIgnoreCase("Calama") && Cobreloa.getNombre_dt().equalsIgnoreCase("Fantasma Figueroa")) {
             flag = true;
