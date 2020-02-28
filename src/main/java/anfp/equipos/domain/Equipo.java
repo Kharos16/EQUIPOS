@@ -15,10 +15,10 @@ public class Equipo implements Serializable {
     private String nombre;
     @Column(name = "puntos")
     private int puntos;
-    @Column(name = "ciudad")2
+    @Column(name = "ciudad")
     private String ciudad;
     @Column(name = "nombre_dt")
-    private String nombre_dt;
+    private String nombreDt;
 
     public Equipo() {
     }
@@ -27,11 +27,11 @@ public class Equipo implements Serializable {
         this.nombre = nombre;
     }
 
-    public Equipo(String nombre, int puntos, String ciudad, String nombre_dt) {
+    public Equipo(String nombre, int puntos, String ciudad, String nombreDt) {
         this.nombre = nombre;
         this.puntos = puntos;
         this.ciudad = ciudad;
-        this.nombre_dt = nombre_dt;
+        this.nombreDt = nombreDt;
     }
 
     public int getId() {
@@ -62,18 +62,18 @@ public class Equipo implements Serializable {
         this.ciudad = ciudad;
     }
 
-    public String getNombre_dt() {
-        return nombre_dt;
+    public String getNombreDt() {
+        return nombreDt;
     }
 
-    public void setNombre_dt(String nombre_dt) {
-        this.nombre_dt = nombre_dt;
+    public void setNombreDt(String nombreDt) {
+        this.nombreDt = nombreDt;
     }
 
     @Override
     public String toString() {
-        return String.format("Equipo [id=%d, Nombre='%s'', puntos=%d, ciudad='%s'', nombre_dt='%s'']",
-                id, nombre, puntos, ciudad, nombre_dt);
+        return String.format("Equipo [id=%d, Nombre='%s'', puntos=%d, ciudad='%s'', nombreDt='%s'']",
+                id, nombre, puntos, ciudad, nombreDt);
     }
 
 }

@@ -13,7 +13,7 @@ public class EquipoBean {
     @JsonProperty
     private String ciudad;
     @JsonProperty(defaultValue = "Lo echaron")
-    private String nombre_dt;
+    private String nombreDt;
 
     public EquipoBean() {
     }
@@ -22,11 +22,11 @@ public class EquipoBean {
         this.nombre = nombre;
     }
 
-    public EquipoBean(String nombre, int puntos, String ciudad, String nombre_dt) {
+    public EquipoBean(String nombre, int puntos, String ciudad, String nombreDt) {
         this.nombre = nombre;
         this.puntos = puntos;
         this.ciudad = ciudad;
-        this.nombre_dt = nombre_dt;
+        this.nombreDt = nombreDt;
     }
 
     public int getId() {
@@ -61,18 +61,18 @@ public class EquipoBean {
         this.ciudad = ciudad;
     }
 
-    public String getNombre_dt() {
-        return nombre_dt;
+    public String getNombreDt() {
+        return nombreDt;
     }
 
-    public void setNombre_dt(String nombre_dt) {
-        this.nombre_dt = nombre_dt;
+    public void setNombreDt(String nombreDt) {
+        this.nombreDt = nombreDt;
     }
 
     @Override
     public String toString() {
-        return String.format("Equipo [id=%d, Nombre='%s'', puntos=%d, ciudad='%s'', nombre_dt='%s'']",
-                id, nombre, puntos, ciudad, nombre_dt);
+        return String.format("Equipo [id=%d, Nombre='%s'', puntos=%d, ciudad='%s'', nombreDt='%s'']",
+                id, nombre, puntos, ciudad, nombreDt);
     }
 
 }

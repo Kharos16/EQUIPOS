@@ -17,6 +17,16 @@ public class EquipoService {
     private static final Logger logger = LoggerFactory.getLogger(EquipoService.class);
     @Autowired
     private IEquiposDAO daoEquipos;
+    private static final String OBJECTFOUND = "Se encontraron estos objetos: {} ";
+    private static final String FOUNDBYNOMBRE = "Se encontro este objeto por nombre: {} {} ";
+    private static final String FOUNDBYCIUDAD = "Se encontro este objeto por ciudad: {} {} ";
+    private static final String ENTITYSAVED = "Entidad guardada en Base de datos Exitosamente: {} ";
+    private static final String MODIFYOK = "Entidad modificada Exitosamente: {} ";
+    private static final String DELETEOK = "Entidad eliminada Exitosamente: {} ";
+    private static final String ALREADYEXIST = "La entidad ya existe y no puede crearse, debe modificarse";
+    private static final String NOTEXISTMOD = "La entidad no existe y no puede modificarse, debe crearse";
+    private static final String NOTEXISTDEL = "La entidad no existe y no puede eliminarse";
+
 
     /*
     Metodos endpoint
@@ -24,7 +34,7 @@ public class EquipoService {
 
     public List<EquipoBean> getAllEquiposOrderByNombreAsc() {
         List<Equipo> equipos = daoEquipos.findAllByOrderByNombreAsc();
-        logger.info("Se encontraron estos objetos: " + equipos);
+        logger.info(OBJECTFOUND, equipos);
         return equipos.stream()
                 .map(this::getEquipoBean)
                 .collect(Collectors.toList());
@@ -32,15 +42,15 @@ public class EquipoService {
 
     public List<EquipoBean> getAllEquiposOrderByCiudadAsc() {
         List<Equipo> equipos = daoEquipos.findAllByOrderByCiudadAsc();
-        logger.info("Se encontraron estos objetos: " + equipos);
+        logger.info(OBJECTFOUND, equipos);
         return equipos.stream()
                 .map(this::getEquipoBean)
                 .collect(Collectors.toList());
     }
 
-    public List<EquipoBean> getTop10OrderByPuntosAsc() {
-        List<Equipo> equipos = daoEquipos.findTop10ByOrderByPuntosAsc();
-        logger.info("Se encontraron estos objetos: " + equipos);
+    public List<EquipoBean> getTop10OrderByPuntosDesc() {
+        List<Equipo> equipos = daoEquipos.findTop10ByOrderByPuntosDesc();
+        logger.info(OBJECTFOUND, equipos);
         return equipos.stream()
                 .map(this::getEquipoBean)
                 .collect(Collectors.toList());
@@ -48,41 +58,40 @@ public class EquipoService {
 
     public EquipoBean getEquipoByNombre(@NotNull String equipo) {
         EquipoBean bean = getEquipoBean(daoEquipos.findByNombre(equipo));
-        logger.info("Se encontro este objeto por nombre: " + equipo, bean);
+        logger.info(FOUNDBYNOMBRE, equipo, bean);
         return bean;
     }
 
-    public EquipoBean getEquipoByCiudad(@NotNull String equipo) {
-        EquipoBean bean = getEquipoBean(daoEquipos.findByCiudad(equipo));
-        logger.info("Se encontro este objeto por ciudad: " + equipo, bean);
-        return bean;
+    public List<EquipoBean> getEquiposByCiudad(@NotNull String equipo) {
+        List<EquipoBean> listabean =
+                daoEquipos.findAllByCiudad(equipo).stream()
+                        .map(this::getEquipoBean)
+                        .collect(Collectors.toList());
+        logger.info(FOUNDBYCIUDAD, equipo, listabean);
+        return listabean;
     }
 
 
-    public EquipoBean createEquipo(@NotNull Equipo equipo) {
-        EquipoBean bean = getEquipoBean(equipo);
+    public EquipoBean createEquipo(@NotNull EquipoBean bean) {
+        Equipo equipo = getEquipo(bean);
         if (!daoEquipos.existsByNombre(equipo.getNombre())) {
             equipo = daoEquipos.save(equipo);
-            logger.info("Entidad guardada en Base de datos Exitosamente: " + equipo);
-            bean.setId(equipo.getId());
+            logger.info(ENTITYSAVED, equipo);
+            bean.setId(daoEquipos.findByNombre(bean.getNombre()).getId());
         } else {
-            logger.error("La entidad ya existe y no puede crearse, debe modificarse");
+            logger.error(ALREADYEXIST);
         }
         return bean;
     }
 
     public EquipoBean modifyEquipo(@NotNull EquipoBean bean) {
-        Equipo equipo = new Equipo();
-        equipo.setNombre(bean.getNombre());
-        equipo.setPuntos(bean.getPuntos());
-        equipo.setCiudad(bean.getCiudad());
-        equipo.setNombre_dt(bean.getNombre_dt());
+        Equipo equipo = getEquipo(bean);
         if (daoEquipos.existsByNombre(equipo.getNombre())) {
             equipo = daoEquipos.save(equipo);
-            logger.info("Entidad modificada Exitosamente: " + equipo);
+            logger.info(MODIFYOK, equipo);
             bean.setId(equipo.getId());
         } else {
-            logger.error("La entidad no existe y no puede modificarse, debe crearse");
+            logger.error(NOTEXISTMOD);
         }
         return bean;
     }
@@ -91,9 +100,9 @@ public class EquipoService {
         EquipoBean bean = getEquipoBean(daoEquipos.findByNombre(equipo));
         if (daoEquipos.existsByNombre(equipo)) {
             daoEquipos.deleteByNombre(equipo);
-            logger.info("Entidad eliminada Exitosamente: " + equipo);
+            logger.info(DELETEOK, equipo);
         } else {
-            logger.error("La entidad no existe y no puede eliminarse");
+            logger.error(NOTEXISTDEL);
         }
         return bean;
     }
@@ -107,7 +116,16 @@ public class EquipoService {
         equipoBean.setNombre(ent.getNombre());
         equipoBean.setCiudad(ent.getCiudad());
         equipoBean.setPuntos(ent.getPuntos());
-        equipoBean.setNombre_dt(ent.getNombre_dt());
+        equipoBean.setNombreDt(ent.getNombreDt());
         return equipoBean;
+    }
+
+    private Equipo getEquipo(@NotNull EquipoBean bean) {
+        Equipo entity = new Equipo();
+        entity.setNombre(bean.getNombre());
+        entity.setPuntos(bean.getPuntos());
+        entity.setCiudad(bean.getCiudad());
+        entity.setNombreDt(bean.getNombreDt());
+        return entity;
     }
 }

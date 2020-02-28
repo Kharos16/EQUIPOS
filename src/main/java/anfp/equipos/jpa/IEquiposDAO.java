@@ -12,13 +12,13 @@ public interface IEquiposDAO extends JpaRepository<Equipo, Integer> {
 
     public List<Equipo> findAllByOrderByCiudadAsc();
 
-    public List<Equipo> findTop10ByOrderByPuntosAsc();
+    public List<Equipo> findAllByCiudad(String ciudad);
+
+    public List<Equipo> findTop10ByOrderByPuntosDesc();
 
     public Equipo findByNombre(String nombre);
 
     public List<Equipo> findByPuntos(int puntos);
-
-    public Equipo findByCiudad(String ciudad);
 
     public boolean existsByNombre(String nombre);
 

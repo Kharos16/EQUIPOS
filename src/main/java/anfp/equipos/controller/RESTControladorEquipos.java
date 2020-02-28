@@ -19,35 +19,45 @@ public class RESTControladorEquipos {
     @Autowired
     EquipoService service;
 
-    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.GET)
+    @GetMapping(value = "/equipos", produces = {"application/json"})
     public ResponseEntity<List<EquipoBean>> getEquipos() {
         return new ResponseEntity<>(service.getAllEquiposOrderByNombreAsc(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/equipos/ciudad", produces = {"application/json"}, method = RequestMethod.GET)
-    public ResponseEntity<List<EquipoBean>> getEquiposOrderByCiudad() {
-        return new ResponseEntity<>(service.getAllEquiposOrderByCiudadAsc(), HttpStatus.OK);
+    @GetMapping(value = "/equipos/sortBy/", produces = {"application/json"})
+    public ResponseEntity<List<EquipoBean>> getEquiposEmptySort() {
+        return new ResponseEntity<>(service.getAllEquiposOrderByNombreAsc(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/equipos/top10", produces = {"application/json"}, method = RequestMethod.GET)
-    public ResponseEntity<List<EquipoBean>> getEquiposTop10() {
-        return new ResponseEntity<>(service.getTop10OrderByPuntosAsc(), HttpStatus.OK);
+    @GetMapping(value = "/equipos/sortBy/{parameter}", produces = {"application/json"})
+    public ResponseEntity<List<EquipoBean>> getEquiposSort(@PathVariable(name = "parameter") String sortBy) {
+        if (sortBy.equalsIgnoreCase("Ciudad")) {
+            return new ResponseEntity<>(service.getAllEquiposOrderByCiudadAsc(), HttpStatus.OK);
+        } else if (sortBy.equalsIgnoreCase("Top10")){
+            return new ResponseEntity<>(service.getTop10OrderByPuntosDesc(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(service.getAllEquiposOrderByNombreAsc(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/equipos/{nombre}", produces = {"application/json"}, method = RequestMethod.GET)
+    @GetMapping(value = "/equipos/{nombre}", produces = {"application/json"})
     public ResponseEntity<EquipoBean> getEquiposByNombre(@PathVariable String nombre) {
         return new ResponseEntity<>(service.getEquipoByNombre(nombre), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/equipos/{ciudad}", produces = {"application/json"}, method = RequestMethod.GET)
-    public ResponseEntity<EquipoBean> getEquiposByCiudad(@PathVariable String ciudad) {
-        return new ResponseEntity<>(service.getEquipoByCiudad(ciudad), HttpStatus.OK);
+    @GetMapping(value = "/equipos/ciudad/", produces = {"application/json"})
+    public ResponseEntity<Object> getEquiposByCiudadSinCiudad() {
+        return new ResponseEntity<>("Not a valid PATH", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.POST)
-    public ResponseEntity<EquipoBean> createEquipo(@RequestBody Equipo equipo) {
+    @GetMapping(value = "/equipos/ciudad/{ciudad}", produces = {"application/json"})
+    public ResponseEntity<List<EquipoBean>> getEquiposByCiudad(@PathVariable(name = "ciudad") String ciudad) {
+        return new ResponseEntity<>(service.getEquiposByCiudad(ciudad), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/equipos", produces = {"application/json"})
+    public ResponseEntity<EquipoBean> createEquipo(@RequestBody EquipoBean toCreate) {
         try {
-            EquipoBean bean = service.createEquipo(equipo);
+            EquipoBean bean = service.createEquipo(toCreate);
             return new ResponseEntity<>(bean, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -55,25 +65,25 @@ public class RESTControladorEquipos {
         }
     }
 
-    @RequestMapping(value = "/equipos", produces = {"application/json"}, method = RequestMethod.PUT)
-    public ResponseEntity<EquipoBean> modifyEquipo(@RequestBody EquipoBean modificado) {
+    @PutMapping(value = "/equipos", produces = {"application/json"})
+    public ResponseEntity<EquipoBean> modifyEquipo(@RequestBody EquipoBean toModify) {
         try {
-            EquipoBean bean = service.modifyEquipo(modificado);
-            return new ResponseEntity<>(bean, HttpStatus.CREATED);
+            EquipoBean bean = service.modifyEquipo(toModify);
+            return new ResponseEntity<>(bean, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/equipos/{nombre}", produces = {"application/json"}, method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/equipos/{nombre}", produces = {"application/json"})
     public ResponseEntity<EquipoBean> deleteEquipo(@PathVariable String nombre) {
         try {
             EquipoBean bean = service.deleteEquipo(nombre);
             return new ResponseEntity<>(bean, HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return new ResponseEntity<>(new EquipoBean("No_Modificado"), HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<>(new EquipoBean("No_Eliminado"), HttpStatus.BAD_REQUEST);
         }
     }
 }

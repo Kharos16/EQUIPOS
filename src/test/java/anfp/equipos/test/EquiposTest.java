@@ -1,9 +1,7 @@
 package anfp.equipos.test;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+import anfp.equipos.domain.Equipo;
+import anfp.equipos.jpa.IEquiposDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import anfp.equipos.domain.Equipo;
-import anfp.equipos.jpa.IEquiposDAO;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -51,9 +51,9 @@ public class EquiposTest {
 
     @Test
     public void cuandoFindEsCobreloaConTodosSusDatosEntoncesTrue() {
-        Equipo Cobreloa = this.daoEquipos.findById("Cobreloa").orElse(new Equipo("Cobreloa"));
+        Equipo Cobreloa = this.daoEquipos.findByNombre("Cobreloa");
         boolean flag = false;
-        if (Cobreloa.getNombre().equalsIgnoreCase("Cobreloa") && Cobreloa.getPuntos() == 38 && Cobreloa.getCiudad().equalsIgnoreCase("Calama") && Cobreloa.getNombre_dt().equalsIgnoreCase("Fantasma Figueroa")) {
+        if (Cobreloa.getNombre().equalsIgnoreCase("Cobreloa") && Cobreloa.getPuntos() == 38 && Cobreloa.getCiudad().equalsIgnoreCase("Calama") && Cobreloa.getNombreDt().equalsIgnoreCase("Fantasma Figueroa")) {
             flag = true;
         }
         assertTrue(flag);
@@ -71,7 +71,7 @@ public class EquiposTest {
 
     @Test
     public void cuandoEliminaEntonces4Equipos() {
-        this.daoEquipos.deleteById("Cobreloa");
+        this.daoEquipos.deleteByNombre("Cobreloa");
         int largo = this.daoEquipos.findAll().size();
         assertTrue("SON " + largo + " PERO DEBERIAN SER 4", largo == 4);
     }
@@ -86,8 +86,8 @@ public class EquiposTest {
     @Test
     public void cuandoModificaNombreDTEntoncesSeObtieneModificado() {
         this.daoEquipos.save(new Equipo("Cobreloa", 38, "Calama", "Riveros"));
-        Equipo cobreloa = this.daoEquipos.findById("Cobreloa").get();
+        Equipo cobreloa = this.daoEquipos.findByNombre("Cobreloa");
         assertNotNull(cobreloa);
-        assertTrue("ES " + cobreloa.getNombre_dt() + " PERO DEBERIA SER Riveros", cobreloa.getNombre_dt().equals("Riveros"));
+        assertTrue("ES " + cobreloa.getNombreDt() + " PERO DEBERIA SER Riveros", cobreloa.getNombreDt().equals("Riveros"));
     }
 }
