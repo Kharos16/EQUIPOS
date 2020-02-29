@@ -14,17 +14,7 @@ la aplicacion Spring Boot.
 Para inicializar el contenedor debes tener Docker instalado
 puede ser en su version de Windows o la de Linux.
 
-Las credenciales para la base de datos que es una BDD Postgres son:
+Las credenciales para la base de datos Postgres son:
 
  - Usuario: postgres
  - Password: Welcome
-
-Una vez en el directorio donde se encuentra el Dockerfile
-
- - "docker build -t postgreskarate ."
- - "docker run -d --name "nombre del contenedor" -p 5432:5432
- postgreskarate"
- 
-Para detenerlo
-
- - docker stop "nombre del contenedor"
