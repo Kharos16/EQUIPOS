@@ -1,4 +1,4 @@
-###Contenedor PostgresSQL
+### Contenedor PostgresSQL
 Una vez en el directorio donde se encuentra el Dockerfile
 
  -      docker build -t postgreskarate .
