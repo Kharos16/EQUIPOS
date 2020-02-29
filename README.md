@@ -18,3 +18,7 @@ Las credenciales para la base de datos Postgres son:
 
  - Usuario: postgres
  - Password: Welcome
+ 
+Para la configuracion de la base de datos mirar:
+
+- https://github.com/Kharos16/EQUIPOS/tree/master/PostgresDocker
