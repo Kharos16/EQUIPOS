@@ -6,7 +6,7 @@ Una vez en el directorio donde se encuentra el Dockerfile
  
 Ahora con nuestro contenedor en marcha debemos entrar a su linea de comandos(CLI) con:
 
-docker exec -it "nombre del contenedor" bash
+        docker exec -it "nombre del contenedor" bash
     
 Si estas en windows es probable que tengas que usar winpty 
 para conectarte con:
